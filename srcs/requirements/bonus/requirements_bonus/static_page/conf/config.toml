@@ -1,0 +1,27 @@
+#baseURL = "https://aalseri.42.fr/static"
+title = "Your title"
+theme = "m10c"
+paginate = 8
+canonifyURLs = true
+
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about"
+    weight = 2
+
+[params]
+  author = "John Doe"
+  description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  image = "tt-1.png"
+  menu_item_separator = " - "
+  [[params.social]]
+    icon = "github"
+    name = "Github"
+    url = "https://github.com/gohugoio"

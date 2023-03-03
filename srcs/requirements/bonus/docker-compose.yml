@@ -1,0 +1,124 @@
+version: '3'
+
+services:
+
+  nginx:
+    container_name: nginx
+    build: ./requirements_bonus/NGINX
+    depends_on:
+        - adminer
+        - wordpress
+        - redis
+    ports:
+        - 443:443
+    volumes:
+        - wordpress:/var/www/html/wordpress
+    networks:
+        - inception
+    restart: always
+
+  wordpress:
+    container_name: wordpress
+    build: ./requirements_bonus/WordPress
+    env_file:
+        - .env
+    depends_on:
+        - mariadb
+    volumes:
+        - wordpress:/var/www/html/wordpress
+    networks:
+        - inception
+    restart: always
+
+  mariadb:
+    container_name: mariadb
+    build:
+      context: ./requirements_bonus/MariaDB
+      args:
+        DB_DATABASE: ${DB_DATABASE}
+        DB_USER: ${DB_USER}
+        DB_USERPASS: ${DB_USERPASS}
+        DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    image: mariadb:10.5
+    volumes:
+        - mariadb:/var/lib/mysql
+    env_file:
+        - .env
+    networks:
+        - inception
+    restart: always
+
+  ftp-server:
+    container_name: ftp-server
+    build:
+      context: ./requirements_bonus/ftp_server
+    ports:
+        - "21:21"
+    volumes:
+        - wordpress:/var/www/html
+    networks:
+        - inception
+    restart: always
+
+  redis:
+    container_name: redis
+    build: ./requirements_bonus/redis
+    ports:
+        - 6379:6379
+    env_file:
+        - .env
+    volumes:
+        - wordpress:/var/www/html/wordpress
+    networks:
+        - inception
+    restart: always
+
+  adminer:
+    container_name: adminer
+    build: ./requirements_bonus/adminer
+    depends_on:
+        - mariadb
+    expose:
+        - "9000"
+    env_file:
+        - .env
+    networks:
+        - inception
+    restart: always
+
+  static_page:
+    container_name: static_page
+    build: ./requirements_bonus/static_page
+    networks:
+        - inception
+    restart: always
+
+  cadvisor:
+    container_name: cadvisor
+    build: ./requirements_bonus/cadvisor
+    ports:
+      - "7575:8080"
+    networks:
+      - inception
+    restart: always
+
+networks:
+  inception:
+      driver: bridge 
+      name: inception
+
+volumes:
+  mariadb:
+      driver: local
+      name: mariadb
+      driver_opts:
+          type: none
+          o: bind
+          device: /home/aalseri/data/mariadb
+  wordpress:
+      driver: local
+      name: wordpress
+      driver_opts:
+          type: none
+          o: bind
+          device: /home/aalseri/data/wordpress
