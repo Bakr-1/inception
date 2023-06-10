@@ -5,7 +5,7 @@ services:
     container_name: nginx
     build: 
       context: ./requirements/NGINX/
-    image: nginx
+    # image: nginx
     ports:
       - 443:443
     volumes:
@@ -25,7 +25,9 @@ services:
         DB_USER: ${DB_USER}
         DB_USERPASS: ${DB_USERPASS}
         DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-    image: mariadb:10.5
+    # image: mariadb:10.5
+    ports:
+      - 3306:3306
     volumes:
       - mariadb:/var/lib/mysql
     env_file:
@@ -37,7 +39,9 @@ services:
   wordpress:
     container_name: wordpress
     build: ./requirements/WordPress/
-    image: wordpress
+    # image: wordpress
+    ports:
+      - 9000:9000
     env_file:
       - .env
     depends_on:
@@ -50,19 +54,19 @@ services:
 
 volumes:
   mariadb:
-    driver: local
-    name: mariadb
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/aalseri/data/mariadb
+      driver: local
+      name: mariadb
+      driver_opts:
+          type: none
+          o: bind
+          device: /home/${USER}/data/mariadb
   wordpress:
-    driver: local
-    name: wordpress
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/aalseri/data/wordpress
+      driver: local
+      name: wordpress
+      driver_opts:
+          type: none
+          o: bind
+          device: /home/${USER}/data/wordpress
 
 networks:
   inception:

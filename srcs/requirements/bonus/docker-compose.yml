@@ -20,6 +20,8 @@ services:
   wordpress:
     container_name: wordpress
     build: ./requirements_bonus/WordPress
+    ports:
+        - 9000:9000
     env_file:
         - .env
     depends_on:
@@ -32,6 +34,8 @@ services:
 
   mariadb:
     container_name: mariadb
+    ports:
+        - 3306:3306
     build:
       context: ./requirements_bonus/MariaDB
       args:
@@ -39,7 +43,7 @@ services:
         DB_USER: ${DB_USER}
         DB_USERPASS: ${DB_USERPASS}
         DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-    image: mariadb:10.5
+    # image: mariadb:10.5
     volumes:
         - mariadb:/var/lib/mysql
     env_file:
@@ -75,11 +79,11 @@ services:
 
   adminer:
     container_name: adminer
+    ports:
+      - "600:80"
     build: ./requirements_bonus/adminer
     depends_on:
         - mariadb
-    expose:
-        - "9000"
     env_file:
         - .env
     networks:
@@ -114,11 +118,11 @@ volumes:
       driver_opts:
           type: none
           o: bind
-          device: /home/aalseri/data/mariadb
+          device: /home/${USER}/data/mariadb
   wordpress:
       driver: local
       name: wordpress
       driver_opts:
           type: none
           o: bind
-          device: /home/aalseri/data/wordpress
+          device: /home/${USER}/data/wordpress

@@ -7,7 +7,7 @@ RUN     apk update && apk upgrade && apk add --update --no-cache \
             git \
             shadow \
  &&     rm -f /var/cache/apk/*
-# create new hugo site
+
 RUN hugo new site /var/hugo/static \
  	&&     cd /var/hugo/static \
  	&&     git clone https://github.com/vaga/hugo-theme-m10c themes/m10c \

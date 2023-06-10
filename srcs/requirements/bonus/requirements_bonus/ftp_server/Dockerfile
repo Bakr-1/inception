@@ -3,8 +3,8 @@ FROM debian:buster
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG DEBCONF_NOWARNINGS="yes"
 
-ARG FTP_USER=aalseri
-ARG FTP_PASS=a
+ARG FTP_USER
+ARG FTP_PASS
 
 RUN apt-get update && \
     apt-get install --yes vsftpd

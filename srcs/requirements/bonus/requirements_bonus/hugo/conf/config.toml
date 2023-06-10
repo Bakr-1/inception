@@ -1,7 +1,0 @@
-theme = "m10c"
-paginate = 8
-canonifyURLs = true
-
-[params]
-  author = "Abubakr Alseri"
-  description = "Dedicated hugo service for inception project"
